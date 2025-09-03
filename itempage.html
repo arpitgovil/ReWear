@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-black text-white font-sans">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ReWear - Item Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .tag {
+            @apply px-3 py-1 text-xs rounded-full border border-white/20 text-white/80 bg-white/10 transition-all duration-300 hover: bg-white/20 hover: scale-105;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .fade-in-delay-1 {
+            animation-delay: 0.2s;
+        }
+        
+        .fade-in-delay-2 {
+            animation-delay: 0.4s;
+        }
+        
+        .fade-in-delay-3 {
+            animation-delay: 0.6s;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        @keyframes pulse-glow {
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(31, 106, 246, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(217, 85, 85, 0.2);
+            }
+        }
+        
+        @keyframes shimmer {
+            0% {
+                background-position: '0% 50%';
+            }
+            50% {
+                background-position: '100% 50%';
+            }
+            100% {
+                background-position: '0% 50%';
+            }
+        }
+        
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        .glass-effect {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-effect-dark {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 34, 255, 0.3);
+        }
+        
+        .image-zoom {
+            transition: transform 0.5s ease;
+        }
+        
+        .image-zoom:hover {
+            transform: scale(1.05);
+        }
+        
+        .gradient-border {
+            background: linear-gradient(45deg, #009dff, #f0f0f0, #009dff);
+            padding: 2px;
+            border-radius: 16px;
+        }
+        
+        .gradient-border-inner {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 14px;
+        }
+        
+        .text-shimmer {
+            background: linear-gradient(45deg, #26b3e2, #ffffff, #ffffff);
+            background-size: 200% 200%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'gray-950': '#0a0a0a',
+                        'gray-925': '#1a1a1a',
+                        'gray-900': '#2a2a2a',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                        'fade-in': 'fadeIn 0.6s ease-out forwards',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': {
+                                transform: 'translateY(0px)'
+                            },
+                            '50%': {
+                                transform: 'translateY(-10px)'
+                            },
+                        },
+                        glow: {
+                            '0%': {
+                                boxShadow: '0 0 20px rgba(255, 255, 255, 0.1)'
+                            },
+                            '100%': {
+                                boxShadow: '0 0 30px rgba(255, 255, 255, 0.2)'
+                            },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-inter min-h-screen relative overflow-x-hidden">
+    <!-- Sophisticated Background -->
+    <div class="fixed inset-0 z-0">
+        <div class="absolute inset-0 bg-gradient-to-br from-gray-950 via-black to-gray-925"></div>
+        <div class="absolute top-20 left-10 w-32 h-32 bg-white/3 rounded-full blur-2xl float"></div>
+        <div class="absolute top-40 right-20 w-24 h-24 bg-gray-400/5 rounded-full blur-xl float" style="animation-delay: 2s;"></div>
+        <div class="absolute bottom-40 left-1/4 w-40 h-40 bg-white/2 rounded-full blur-2xl float" style="animation-delay: 4s;"></div>
+        <div class="absolute bottom-20 right-1/3 w-28 h-28 bg-gray-500/5 rounded-full blur-xl float" style="animation-delay: 1s;"></div>
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0); background-size: 30px 30px;"></div>
+    </div>
+
+    <!-- Content Container -->
+    <div class="relative z-10">
+        <!-- Header -->
+        <header class="border-b border-white/10 glass-effect-dark sticky top-0 z-40 fade-in">
+            <div class="max-w-7xl mx-auto px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <!-- Modern Logo -->
+                    <div class="flex items-center space-x-3 group cursor-pointer" onclick="goHome()">
+                        <div class="relative">
+                            <div class="w-12 h-12 relative pulse-glow">
+                                <div class="absolute inset-0 bg-gradient-to-br from-white via-gray-200 to-white rounded-2xl transform group-hover:scale-110 transition-all duration-300 group-hover:rotate-3"></div>
+                                <div class="absolute inset-1 bg-black rounded-xl"></div>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="relative w-6 h-6">
+                                        <div class="absolute inset-0 bg-white rounded-sm transform rotate-12 opacity-80"></div>
+                                        <div class="absolute inset-0.5 bg-gray-300 rounded-sm transform -rotate-12"></div>
+                                        <svg class="w-4 h-4 text-black absolute top-1 left-1 z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-2xl font-bold text-shimmer">ReWear</span>
+                            <span class="text-xs text-gray-400 -mt-1">SUSTAINABLE FASHION</span>
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <nav class="hidden md:flex items-center space-x-8">
+                        <a href="index.html" class="text-gray-300 hover:text-white transition-all duration-300 hover:scale-105 relative group">
+                            Home
+                            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-white to-red-300 transition-all duration-300 group-hover:w-full"></span>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-all duration-300 hover:scale-105 relative group">
+                            Browse
+                            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-white to-red-300 transition-all duration-300 group-hover:w-full"></span>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-all duration-300 hover:scale-105 relative group">
+                            Sell Item
+                            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-blue-300 from-white to-gray-300 transition-all duration-300 group-hover:w-full"></span>
+                        </a>
+                        <button class="bg-gradient-to-r from-white to-blue-200 text-black px-6 py-2 rounded-xl font-semibold hover:shadow-lg hover:shadow-white/25 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 active:scale-95">
+                            Sign Up
+                        </button>
+                    </nav>
+
+                    <!-- Mobile Menu Button -->
+                    <button class="md:hidden p-2 text-gray-300 hover:text-white transition-all duration-300 hover:scale-110 active:scale-95">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto px-6 py-8">
+            <!-- Search -->
+            <div class="max-w-2xl mx-auto mb-10 fade-in fade-in-delay-1">
+                <div class="relative group">
+                    <input id="searchInput" type="text" placeholder="Search items..." class="w-full px-6 py-4 rounded-2xl glass-effect text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/30 transition-all duration-300 hover:border-white/20"
+                    />
+                    <button class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-all duration-300 hover:scale-110 active:scale-95">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Item Display -->
+            <div id="itemDisplay" class="grid md:grid-cols-2 gap-10 mb-16 fade-in fade-in-delay-2">
+                <!-- Left: Main Image + Thumbnails -->
+                <div class="space-y-6">
+                    <div class="gradient-border hover-lift">
+                        <div class="gradient-border-inner p-4">
+                            <img id="mainImage" src="images/Woolen Sweater 1.jpg" alt="Main Item" class="w-full h-96 object-cover rounded-xl shadow-lg image-zoom">
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 overflow-x-auto pb-2" id="thumbnails"></div>
+                </div>
+
+                <!-- Right: Info -->
+                <div class="space-y-6">
+                    <div class="glass-effect rounded-2xl p-6 hover-lift">
+                        <h2 id="itemTitle" class="text-4xl font-bold mb-4 text-shimmer"></h2>
+                        <p id="itemDesc" class="text-gray-300 mb-6 leading-relaxed text-lg"></p>
+                        <div id="itemTags" class="flex flex-wrap gap-3 mb-8"></div>
+
+                        <div class="space-y-4">
+                            <button class="w-full bg-gradient-to-r from-white to-gray-200 text-black px-8 py-4 rounded-2xl font-semibold text-lg hover:shadow-lg hover:shadow-white/25 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 active:scale-95 pulse-glow">
+                                Request Swap / Redeem
+                            </button>
+
+                            <button class="w-full border-2 border-white/30 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-white hover:text-black transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 active:scale-95">
+                                Add to Wishlist
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Seller Info -->
+                    <div class="glass-effect rounded-2xl p-6 hover-lift">
+                        <h3 class="text-xl font-semibold mb-4 text-white">Seller Information</h3>
+                        <div class="flex items-center space-x-4">
+                            <div id="sellerAvatar" class="w-12 h-12 bg-gradient-to-r from-white to-gray-200 rounded-full flex items-center justify-center">
+                                <span id="sellerInitial" class="text-black font-bold text-lg"></span>
+                            </div>
+                            <div>
+                                <p id="sellerName" class="font-semibold"></p>
+                                <p class="text-gray-400 text-sm">Member since 2023</p>
+                                <div class="flex items-center mt-1">
+                                    <div id="sellerRating" class="flex text-yellow-400"></div>
+                                    <span id="sellerRatingText" class="text-gray-400 text-sm ml-2"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Explore More -->
+            <div class="fade-in fade-in-delay-3">
+                <h3 class="text-3xl font-bold mb-8 text-center text-shimmer">Explore More</h3>
+                <div id="exploreItems" class="flex gap-6 overflow-x-auto pb-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div class="glass-effect rounded-2xl p-8 text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+            <p class="text-gray-300">Loading item details...</p>
+        </div>
+    </div>
+
+    <script>
+        // Default items data
+        const defaultItems = [{
+            id: 0,
+            title: "Premium Denim Jacket",
+            description: "A timeless vintage denim jacket crafted from premium cotton. This classic piece features authentic vintage wash, quality hardware, and a perfect oversized fit. Ideal for layering and adds instant style to any outfit. Shows minimal wear and has been carefully maintained.",
+            images: [
+                "images/Denim Jacket 1.webp?auto=compress&cs=tinysrgb&w=800",
+                "images/Denim Jacket 2.webp?auto=compress&cs=tinysrgb&w=800",
+                "images/Denim Jacket 3.webp?auto=compress&cs=tinysrgb&w=800"
+            ],
+            tags: ["Denim", "Size M", "Excellent", "Vintage", "Unisex"],
+            condition: "Excellent",
+            seller: "Aayushi Singh",
+            rating: 4.9
+        }, {
+            id: 1,
+            title: "Elegant Summer Dress",
+            description: "Beautiful floral summer dress made from lightweight, breathable cotton blend. Features a flattering A-line silhouette with delicate floral patterns. Perfect for warm weather occasions, from casual outings to garden parties.",
+            images: [
+                "images/Summer Dress 1.avif?auto=compress&cs=tinysrgb&w=800",
+                "images/Summer Dress 2.avif?auto=compress&cs=tinysrgb&w=800",
+                "images/Summer Dress 3.avif?auto=compress&cs=tinysrgb&w=800"
+            ],
+            tags: ["Floral", "Size S", "Like New", "Cotton", "Summer"],
+            condition: "Like New",
+            seller: "Renaissa",
+            rating: 4.8
+        }, {
+            id: 2,
+            title: "Leather Ankle Boots",
+            description: "Premium brown leather ankle boots with excellent craftsmanship. Features genuine leather construction, comfortable cushioned sole, and timeless design. Perfect for both casual and semi-formal occasions.",
+            images: [
+                "images/Ankel Shoes 1.webp?auto=compress&cs=tinysrgb&w=800",
+                "images/Ankle Shoes 2.webp?auto=compress&cs=tinysrgb&w=800"
+            ],
+            tags: ["Boots", "Size 9", "Good", "Leather", "Unisex"],
+            condition: "Good",
+            seller: "Ansh Arora",
+            rating: 4.7
+        }, {
+            id: 3,
+            title: "Wool Sweater",
+            description: "Cozy wool sweater perfect for cold weather. Made from high-quality merino wool with a classic fit. Features ribbed cuffs and hem for a comfortable fit. Excellent condition with no signs of wear.",
+            images: [
+                "images/Woolen Sweater 1.jpg?auto=compress&cs=tinysrgb&w=800",
+                "images/Woolean Sweater 2.jpg?auto=compress&cs=tinysrgb&w=800"
+            ],
+            tags: ["Wool", "Size L", "Excellent", "Cozy", "Winter"],
+            condition: "Excellent",
+            seller: "Bhumika Singh",
+            rating: 4.9
+        }];
+
+        let currentItem = null;
+
+        // Show loading overlay initially
+        function showLoading() {
+            document.getElementById("loadingOverlay").style.display = "flex";
+        }
+
+        function hideLoading() {
+            setTimeout(() => {
+                document.getElementById("loadingOverlay").style.display = "none";
+                // Trigger fade-in animations
+                document.querySelectorAll('.fade-in').forEach((el, index) => {
+                    setTimeout(() => {
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateY(0)';
+                    }, index * 200);
+                });
+            }, 1000);
+        }
+
+        function displayItem(item) {
+            currentItem = item;
+            document.getElementById("itemTitle").textContent = item.title;
+            document.getElementById("itemDesc").textContent = item.description;
+            document.getElementById("mainImage").src = item.images[0];
+
+            // Seller info
+            document.getElementById("sellerName").textContent = item.seller;
+            document.getElementById("sellerInitial").textContent = item.seller.charAt(0);
+
+            // Rating
+            const ratingContainer = document.getElementById("sellerRating");
+            ratingContainer.innerHTML = "";
+            const fullStars = Math.floor(item.rating);
+            const hasHalfStar = item.rating % 1 !== 0;
+
+            for (let i = 0; i < fullStars; i++) {
+                ratingContainer.innerHTML += "★";
+            }
+            if (hasHalfStar) {
+                ratingContainer.innerHTML += "☆";
+            }
+            for (let i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++) {
+                ratingContainer.innerHTML += "☆";
+            }
+
+            document.getElementById("sellerRatingText").textContent = `(${item.rating}/5)`;
+
+            // Thumbnails with enhanced styling
+            const thumbnails = document.getElementById("thumbnails");
+            thumbnails.innerHTML = "";
+            item.images.forEach((img, i) => {
+                const thumbContainer = document.createElement("div");
+                thumbContainer.className = "gradient-border hover-lift cursor-pointer";
+
+                const thumbInner = document.createElement("div");
+                thumbInner.className = "gradient-border-inner p-1";
+
+                const thumb = document.createElement("img");
+                thumb.src = img;
+                thumb.className = "w-20 h-28 object-cover rounded-lg image-zoom";
+                thumb.onclick = () => {
+                    document.getElementById("mainImage").src = img;
+                    // Add a subtle animation to main image
+                    const mainImg = document.getElementById("mainImage");
+                    mainImg.style.transform = "scale(0.95)";
+                    setTimeout(() => {
+                        mainImg.style.transform = "scale(1)";
+                    }, 150);
+                };
+
+                thumbInner.appendChild(thumb);
+                thumbContainer.appendChild(thumbInner);
+                thumbnails.appendChild(thumbContainer);
+            });
+
+            // Tags with enhanced styling
+            const tags = document.getElementById("itemTags");
+            tags.innerHTML = "";
+            item.tags.forEach(tag => {
+                const span = document.createElement("span");
+                span.className = "tag";
+                span.textContent = tag;
+                tags.appendChild(span);
+            });
+        }
+
+        // Explore More Section with enhanced cards
+        function createExploreSection() {
+            const explore = document.getElementById("exploreItems");
+            defaultItems.forEach((item, i) => {
+                if (currentItem && item.id === currentItem.id) return; // Skip current item
+
+                const div = document.createElement("div");
+                div.className = "min-w-[200px] cursor-pointer hover-lift glass-effect rounded-2xl overflow-hidden";
+                div.onclick = () => {
+                    showLoading();
+                    setTimeout(() => {
+                        displayItem(item);
+                        createExploreSection(); // Refresh explore section
+                        hideLoading();
+                    }, 500);
+                };
+                div.innerHTML = `
+                    <img src="${item.images[0]}" class="w-full h-48 object-cover image-zoom" />
+                    <div class="p-4">
+                        <p class="text-sm text-gray-300 text-center font-medium">${item.title}</p>
+                        <div class="flex justify-center mt-2">
+                            <span class="tag text-xs">${item.condition}</span>
+                        </div>
+                    </div>
+                `;
+                explore.appendChild(div);
+            });
+        }
+
+        // Enhanced search functionality
+        document.getElementById("searchInput").addEventListener("input", (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            if (searchTerm.length > 2) {
+                // Simulate search with visual feedback
+                e.target.style.borderColor = "#ffffff40";
+                e.target.style.boxShadow = "0 0 20px rgba(255, 255, 255, 0.1)";
+            } else {
+                e.target.style.borderColor = "";
+                e.target.style.boxShadow = "";
+            }
+        });
+
+        // Add Enter key support for search
+        document.getElementById("searchInput").addEventListener("keypress", (e) => {
+            if (e.key === 'Enter') {
+                const searchTerm = e.target.value.toLowerCase();
+                const foundItem = defaultItems.find(item =>
+                    item.title.toLowerCase().includes(searchTerm) ||
+                    item.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+                );
+
+                if (foundItem) {
+                    showLoading();
+                    setTimeout(() => {
+                        displayItem(foundItem);
+                        createExploreSection();
+                        hideLoading();
+                    }, 500);
+                }
+            }
+        });
+
+        // Go home function
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            showLoading();
+
+            // Get selected item from localStorage or use default
+            const selectedItem = localStorage.getItem('selectedItem');
+            let itemToDisplay = defaultItems[0]; // Default to first item
+
+            if (selectedItem) {
+                try {
+                    itemToDisplay = JSON.parse(selectedItem);
+                } catch (e) {
+                    console.error('Error parsing selected item:', e);
+                }
+            }
+
+            displayItem(itemToDisplay);
+            createExploreSection();
+            hideLoading();
+
+            // Add parallax effect to floating background elements
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const parallax = document.querySelectorAll('.float');
+                const speed = 0.3;
+
+                parallax.forEach(element => {
+                    const yPos = -(scrolled * speed);
+                    element.style.transform = `translateY(${yPos}px)`;
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

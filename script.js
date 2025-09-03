@@ -1,16 +1,16 @@
 // Database simulation using localStorage
 class UserDatabase {
     constructor() {
-        this.users = JSON.parse(localStorage.getItem('rewear_users') || '[]');
-        this.currentUser = JSON.parse(localStorage.getItem('rewear_current_user') || 'null');
+        this.users = JSON.parse(localStorage.getItem('RenewFit') || '[]');
+        this.currentUser = JSON.parse(localStorage.getItem('RenewFit') || 'null');
     }
 
     saveUsers() {
-        localStorage.setItem('rewear_users', JSON.stringify(this.users));
+        localStorage.setItem('RenewFit', JSON.stringify(this.users));
     }
 
     saveCurrentUser() {
-        localStorage.setItem('rewear_current_user', JSON.stringify(this.currentUser));
+        localStorage.setItem('RenewFit', JSON.stringify(this.currentUser));
     }
 
     register(userData) {
@@ -64,7 +64,7 @@ class UserDatabase {
 
     logout() {
         this.currentUser = null;
-        localStorage.removeItem('rewear_current_user');
+        localStorage.removeItem('RenewFit');
     }
 
     isLoggedIn() {
@@ -198,13 +198,13 @@ document.getElementById('signupPopupForm').addEventListener('submit', function(e
             db.currentUser = user;
             db.saveCurrentUser();
 
-            buttonText.textContent = 'Join ReWear';
+            buttonText.textContent = 'Join RenewFit';
             spinner.classList.add('hidden');
             closeSignupPopup();
-            showToast('Account created successfully! Welcome to ReWear!', 'success');
+            showToast('Account created successfully! Welcome to RenewFit!', 'success');
             updateUIForLoggedInUser();
         } catch (error) {
-            buttonText.textContent = 'Join ReWear';
+            buttonText.textContent = 'Join RenewFit';
             spinner.classList.add('hidden');
             showToast(error.message, 'error');
         }
